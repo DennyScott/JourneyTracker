@@ -1,20 +1,20 @@
-Events = new Meteor.Collection('events');
+Challenges = new Meteor.Collection('challenges');
 
 Meteor.methods({
 
 	//-----------------------------EVENTS CREATION METHOD------------------------------------------//
 
-	 addEvent: function(eventAttributes){
+	 addChallenge: function(challengeAttributes){
 
 		var user = Meteor.user();
 
 		//Ensures that the user is logged in
 		if (!user){
-			throw new Meteor.Error(401, "You need to log in to create new events");
+			throw new Meteor.Error(401, "You need to log in to create new challenges");
 		}
 
 		//filling in other keys
-		var newEvent = _.extend(_.pick(eventAttributes, 'name', 'description', 'eventDate', 'completionDate'), {
+		var newChallenge = _.extend(_.pick(challengeAttributes, 'name', 'description', 'isTimed', 'time'), {
 			createdTime: new Date().getTime(),
 			upVotes: 0,
 			downVotes: 0,
@@ -22,63 +22,65 @@ Meteor.methods({
 			downVoterIDs: [],
 			numberOfEnrolls: 0,
 			numberOfCompleted: 0,
+			lastCompletedBy: "No One",
+			lastCompletedOn: new Date().getTime()
 		}
 
 		//Inserts new project into collection
-		var eventID = Events.insert(newEvent);
+		var challengeID = Challenges.insert(newChallenge);
 
 		//returns the ID of the new project
-		return eventID;
+		return challengeID;
 	},
 
 	//-----------------------------------END OF EVENTS ADDTION METHODS--------------------------------------//
 
 	//-----------------------------------EVENTS UPDATE METHODS----------------------------------------------//
-	incrementEventVotes: function(id) {
+	incrementChallangeVotes: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
-		var foundEvent = Events.findOne(id);
+		var foundChallenge = Challenges.findOne(id);
 
 		//If the user has already upvoted, this will dissallow them from upvoting again
-		if(foundEvent.upVoterIDs.indexOf(profile._id) > -1){
+		if(foundChallenge.upVoterIDs.indexOf(profile._id) > -1){
 			throw new Meteor.Error(425, 'User has already up voted'); 
 		}
 
 		//In case the user had downvoted, this takes the downvote away
-		if(foundEvent.downVoterIDs.indexOf(profile._id) > -1){
-			Events.update(id, { $pull: { 'downVoterIDs': profile._id }, $inc: { 'downVotes': -1 } } );
+		if(foundChallenge.downVoterIDs.indexOf(profile._id) > -1){
+			Challenges.update(id, { $pull: { 'downVoterIDs': profile._id }, $inc: { 'downVotes': -1 } } );
 		}
 
-		Events.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
+		Challenges.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
 	},
 	
-	decrementEventVotes: function(id) {
+	decrementChallangeVotes: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
-		var foundEvent = Events.findOne(id);
+		var foundChallenge = Challenges.findOne(id);
 
-		//If the user has already downvoted, this will dissallow them from upvoting again
-		if(foundEvent.downVoterIDs.indexOf(profile._id) > -1){
+		//If the user has already downvoted, this will disallow them from upvoting again
+		if(foundChallenge.downVoterIDs.indexOf(profile._id) > -1){
 			throw new Meteor.Error(425, 'User has already up voted'); 
 		}
 
 		//In case the user had upvoted, this takes the upvote away
-		if(foundEvent.upVoterIDs.indexOf(profile._id) > -1){
-			Events.update(id, { $pull: { 'upVoterIDs': profile._id }, $inc: { 'upVotes': -1 } } );
+		if(foundChallenge.upVoterIDs.indexOf(profile._id) > -1){
+			Challenges.update(id, { $pull: { 'upVoterIDs': profile._id }, $inc: { 'upVotes': -1 } } );
 		}
 
-		Events.update(id, {$inc: {'downVotes': 1}, $push{ 'downVoterIDs': profile._id } });
+		Challenges.update(id, {$inc: {'downVotes': 1}, $push{ 'downVoterIDs': profile._id } });
 	},
 
-	eventEnroll: function(id) {
-		Events.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
+	challengeEnroll: function(id) {
+		Challenges.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
 	},
 
-	eventComplete: function(id) {
+	challengeComplete: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
 		var now = new Date().getTime;
-		Events.update(id, { $inc: { 'numberOfCompleted': 1 } } );
+		Challenges.update(id, { $inc: { 'numberOfEnrolls': -1, 'numberOfCompleted': 1 }, $set: { 'lastCompletedOn': now, 'lastCompletedBy': profile.userName } } );
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//
@@ -86,10 +88,10 @@ Meteor.methods({
 	//-----------------------------------EVENTS REMOVE METHODS----------------------------------------------//
 	
 	
-	removeEvent: function(id) {
-
+	removeChallenge: function(id) {
+		
 		//NEEDS ADMIN VERIFICATION FOR REMOVAL!!!!
-		Events.remove(id);
+		Challenges.remove(id);
 	}
 	//---------------------------------END OF EVENTS REMOVE METHODS-----------------------------------------//
 });
