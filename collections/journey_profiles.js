@@ -2,6 +2,8 @@ Profiles = new Meteor.Collection('profiles');
 
 Meteor.methods({
 
+	//-----------------------------PROFILE CREATION METHOD------------------------------------------//
+
 	 addProfile: function(profileAttributes){
 
 		var user = Meteor.user();
@@ -42,7 +44,9 @@ Meteor.methods({
 		return profileID;
 	},
 
-	//-----------------------------------STORY UPDATE METHODS----------------------------------------------//
+	//-----------------------------------END OF PROFILE ADDTION METHODS--------------------------------------//
+
+	//-----------------------------------PROFILE UPDATE METHODS----------------------------------------------//
 	
 	updateLastLoggedIn: function(id) {
 		var user = Meteor.user();
@@ -128,9 +132,9 @@ Meteor.methods({
 	},
 	
 
-	//---------------------------------END OF STORY UPDATE METHODS-----------------------------------------//
+	//---------------------------------END OF PROFILE UPDATE METHODS-----------------------------------------//
 
-	//-----------------------------------STORY REMOVE METHODS----------------------------------------------//
+	//-----------------------------------PROFILE REMOVE METHODS----------------------------------------------//
 	
 	
 	removeProfile: function(id) {
@@ -142,5 +146,5 @@ Meteor.methods({
 			throw new Meteor.Error(405, "You need to own this profile to delete it");
 		}
 	}
-	//---------------------------------END OF STORY REMOVE METHODS-----------------------------------------//
+	//---------------------------------END OF PROFILE REMOVE METHODS-----------------------------------------//
 });
