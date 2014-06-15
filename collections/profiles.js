@@ -151,7 +151,7 @@ Meteor.methods({
 		});
 
 		Profiles.update(id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
-	}
+	},
 	
 
 	//---------------------------------END OF PROFILE UPDATE METHODS-----------------------------------------//
