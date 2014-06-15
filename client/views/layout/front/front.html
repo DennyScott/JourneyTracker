@@ -1,0 +1,22 @@
+<template name="front">
+ <div class='box-lid-menu'>
+    <div class='box-lid-icon'></div>
+    <nav>
+        <h4 class="nav-menu">Menu</h4>
+        <ul class="lid-data"><li><a title="Overview" href="#">Overview</a></li><li><a title="Installation" href="#">Installation</a></li><li><a title="Configuration" href="#">Configuration</a></li></ul>
+      </nav>  </div>
+  <div class='box-lid'>
+    <div class='box-lid-content'>
+ <aside>
+    {{> yield region='header'}}
+  </aside>
+
+  <div>
+    {{> yield}}
+  </div>
+
+
+</div>
+</div>
+	
+</template>

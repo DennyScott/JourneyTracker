@@ -1,0 +1,48 @@
+#map-canvas {
+	margin:10px auto;
+	height:700px;
+}
+
+.seeStats button {
+	padding: 10px 150px;
+	margin-right:-15px;
+	-webkit-animation-delay: 1s;
+	-moz-animation-delay: 1s;
+	-o-animation-delay: 1s;
+	animation-delay: 1s;
+ -webkit-animation-duration:2s;
+	-moz-animation-duration: 2s;
+	-o-animation-duration: 2s;
+	animation-duration: 2s;
+
+
+}
+
+.seeStats {
+	margin:10px auto;
+}
+
+div#map-canvas {
+	-webkit-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+	-moz-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+	-o-transition:width 300ms ease-in-out, height 300ms ease-in-out;
+	transition:width 300ms ease-in-out, height 300ms ease-in-out;
+}
+
+.row > .stats {
+	-webkit-transition: opacity 1s ease-in-out;
+	-moz-transition: opacity 1s ease-in-out;
+	-o-transition: opacity 1s ease-in-out;
+	transition: opacity 1s ease-in-out;
+	margin-top:10px;
+	display:none;
+}
+
+.row > .stats.show {
+	display:block;
+
+}
+
+.list-group-item.active {
+	background-color:lightgoldenrodyellow;
+}

@@ -8,6 +8,10 @@ autopublish
 insecure
 iron-router
 accounts-entry
-bootstrap-3
 twit
 googlemaps
+bootstrap-3
+font-awesome
+animate-css
+accounts-ui
+accounts-password
