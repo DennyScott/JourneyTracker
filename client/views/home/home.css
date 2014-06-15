@@ -3,8 +3,8 @@
 	height:700px;
 }
 
-.seeStats button {
-	padding: 10px 150px;
+button#toggleStats {
+	padding: 10px 18px;
 	margin-right:-15px;
 	-webkit-animation-delay: 1s;
 	-moz-animation-delay: 1s;
@@ -14,9 +14,10 @@
 	-moz-animation-duration: 2s;
 	-o-animation-duration: 2s;
 	animation-duration: 2s;
-
-
+	color:white;
+	border-radius:100px;
 }
+
 
 .seeStats {
 	margin:10px auto;
@@ -29,7 +30,7 @@ div#map-canvas {
 	transition:width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-.row > .stats {
+#home-display > #map-overlay > .stats {
 	-webkit-transition: opacity 1s ease-in-out;
 	-moz-transition: opacity 1s ease-in-out;
 	-o-transition: opacity 1s ease-in-out;
@@ -38,11 +39,146 @@ div#map-canvas {
 	display:none;
 }
 
-.row > .stats.show {
+#home-display > #map-overlay > .stats.show {
 	display:block;
 
 }
 
 .list-group-item.active {
 	background-color:lightgoldenrodyellow;
+}
+
+/** NAV TABS **/
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+/* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
+.board{
+}
+.board .nav-tabs {
+}
+p.narrow{
+    width: 60%;
+    margin: 10px auto;
+}
+
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+}
+
+span.round-tabs{
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    border-radius: 100px;
+    background: white;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+}
+
+.navbar-brand {
+	margin-top:7px;
+}
+
+span.round-tabs.one{
+    color: rgb(34, 194, 34);border: 2px solid rgb(34, 194, 34);
+}
+
+li.active span.round-tabs.one{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: rgb(34, 194, 34);
+}
+
+span.round-tabs.two{
+    color: #febe29;border: 2px solid #febe29;
+}
+
+.buttonContent {
+	margin-top:-20px;
+}
+li.active span.round-tabs.two{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #febe29;
+}
+
+span.round-tabs.three{
+    color: #3e5e9a;border: 2px solid #3e5e9a;
+}
+
+li.active span.round-tabs.three{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #3e5e9a;
+}
+
+span.round-tabs.four{
+    color: #f1685e;border: 2px solid #f1685e;
+}
+
+li.active span.round-tabs.four{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #f1685e;
+}
+
+span.round-tabs.five{
+    color: #999;border: 2px solid #999;
+}
+
+li.active span.round-tabs.five{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #999;
+}
+
+.nav-tabs > li.active > a span.round-tabs{
+    background: #fafafa;
+}
+li.active:before {
+    content: " ";
+    position: absolute;
+    left: 35%;
+    /* right: 0; */
+    margin: 0 auto;
+    bottom: -2px;
+    border: 10px solid transparent;
+    border-bottom-color: #fff;
+    z-index: 1;
+}
+li.active:after {
+    content: " ";
+    position: absolute;
+    left: 35%;
+    /* right: 0; */
+    margin: 0 auto;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #ddd;
+}
+.nav-tabs > li a{
+   width: 70px;
+   height: 70px;
+   margin: 20px auto;
+   border-radius: 100%;
+   padding: 0;
+}
+
+.board-inner .nav-tabs > li > a:hover{
+    background: transparent;
+		border-color:transparent;
+}
+
+.board-inner .nav-tabs > li.active > a,
+.board-inner .nav-tabs > li.active > a:hover,
+.board-inner .nav-tabs > li.active > a:focus {
+	border: 0;
+}
+
+.nav-tabs > li > a:hover {
+	background-color:transparent;
+	border-color:transparent;
 }
