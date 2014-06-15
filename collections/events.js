@@ -22,7 +22,7 @@ Meteor.methods({
 			downVoterIDs: [],
 			numberOfEnrolls: 0,
 			numberOfCompleted: 0,
-		}
+		});
 
 		//Inserts new project into collection
 		var eventID = Events.insert(newEvent);
@@ -34,7 +34,7 @@ Meteor.methods({
 	//-----------------------------------END OF EVENTS ADDTION METHODS--------------------------------------//
 
 	//-----------------------------------EVENTS UPDATE METHODS----------------------------------------------//
-	incrementEventVotes: function(id) {
+	eventUpVote: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
 		var foundEvent = Events.findOne(id);
@@ -52,7 +52,7 @@ Meteor.methods({
 		Events.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
 	},
 	
-	decrementEventVotes: function(id) {
+	eventDownVote: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
 		var foundEvent = Events.findOne(id);

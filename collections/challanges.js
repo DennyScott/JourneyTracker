@@ -24,7 +24,7 @@ Meteor.methods({
 			numberOfCompleted: 0,
 			lastCompletedBy: "No One",
 			lastCompletedOn: new Date().getTime()
-		}
+		});
 
 		//Inserts new project into collection
 		var challengeID = Challenges.insert(newChallenge);
@@ -36,7 +36,7 @@ Meteor.methods({
 	//-----------------------------------END OF EVENTS ADDTION METHODS--------------------------------------//
 
 	//-----------------------------------EVENTS UPDATE METHODS----------------------------------------------//
-	incrementChallangeVotes: function(id) {
+	challengeUpVote: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
 		var foundChallenge = Challenges.findOne(id);
@@ -54,7 +54,7 @@ Meteor.methods({
 		Challenges.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
 	},
 	
-	decrementChallangeVotes: function(id) {
+	challengeDownVote: function(id) {
 		var user = Meteor.user();
 		var profile = Profiles.findOne({'userID': user._id});
 		var foundChallenge = Challenges.findOne(id);
