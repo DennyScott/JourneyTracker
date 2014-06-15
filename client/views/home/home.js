@@ -39,19 +39,15 @@ function loadMap(){
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 	map.setCenter(myLat);
 
-	/**
-	 * Data for the markers consisting of a name, a LatLng and a zIndex for
-	 * the order in which these markers should display on top of each
-	 * other.
-	 */
-	var eventsAndChallenges = [
-		['Bondi Beach', 49.8964, -97.1392, 4],
-		['Coogee Beach', 49.8794, -97.1392, 5],
-		['Cronulla Beach', 49.8894, -97.1392, 3],
-		['Manly Beach', 49.8894, -97.1592, 2],
-		['Maroubra Beach', 49.8794, -97.1592, 1]
-	];
 
+	var challenges = Challenges.find();
+	var i = 1;
+	var eventsAndChalleneges = [];
+	challenges.forEach(function (chal) {
+		eventsAndChalleneges[eventsAndChalleneges.length] = [chal.name, chal.longditude, chal.latitude, i];
+		i++;
+	});
+	
 	// Add markers to the map
 
 	// Marker sizes are expressed as a Size of X,Y
