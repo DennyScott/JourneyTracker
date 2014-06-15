@@ -22,6 +22,7 @@ Meteor.methods({
 			downVoterIDs: [],
 			numberOfEnrolls: 0,
 			numberOfCompleted: 0,
+			points: 50
 		});
 
 		//Inserts new project into collection
@@ -74,11 +75,11 @@ Meteor.methods({
 		Events.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
 	},
 
-	eventComplete: function(id) {
-		var user = Meteor.user();
-		var profile = Profiles.findOne({'userID': user._id});
+	eventComplete: function(id, profileID) {
+		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;
 		Events.update(id, { $inc: { 'numberOfCompleted': 1 } } );
+		return points;
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//

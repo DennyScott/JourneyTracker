@@ -23,7 +23,8 @@ Meteor.methods({
 			numberOfEnrolls: 0,
 			numberOfCompleted: 0,
 			lastCompletedBy: "No One",
-			lastCompletedOn: new Date().getTime()
+			lastCompletedOn: new Date().getTime(),
+			points: 25
 		});
 
 		//Inserts new project into collection
@@ -76,11 +77,11 @@ Meteor.methods({
 		Challenges.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
 	},
 
-	challengeComplete: function(id) {
-		var user = Meteor.user();
-		var profile = Profiles.findOne({'userID': user._id});
+	challengeComplete: function(id, profileID) {
+		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;
 		Challenges.update(id, { $inc: { 'numberOfEnrolls': -1, 'numberOfCompleted': 1 }, $set: { 'lastCompletedOn': now, 'lastCompletedBy': profile.userName } } );
+		return points;
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//

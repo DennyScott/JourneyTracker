@@ -4,7 +4,7 @@ Meteor.methods({
 
 	//-----------------------------PROFILE CREATION METHOD------------------------------------------//
 
-	 addProfile: function(profileAttributes){
+	addProfile: function(profileAttributes){
 
 		var user = Meteor.user();
 
@@ -34,7 +34,9 @@ Meteor.methods({
 			completedEventsIDs: [],
 			inventory: [],
 			lastLoggedIn: new Date().getTime(),
-			lastCheckIn: new Date().getTime()
+			lastCheckIn: new Date().getTime(),
+			todaysCheckIns: [],
+			todaysTotalCheckIns: 0
 		});
 
 		//Inserts new project into collection
@@ -78,13 +80,11 @@ Meteor.methods({
 	},
 
 	increasePoints: function(id, points){
-		var found = Profiles.findOne(id);
 		var totalPoints = found.points + points;
 		Profiles.update(id, {$set: {'points': totalPoints}});
 	},
 
 	decreasePoints: function(id, points){
-		var found = Profiles.findOne(id);
 		var totalPoints = found.points - points;
 		Profiles.update(id, {$set: {'points': totalPoints}});
 	},
@@ -117,6 +117,9 @@ Meteor.methods({
 		var found = Profiles.findOne(id);
 		if (found.enrolledChallangesIDs.indexOf(challangeID) !== -1) {
 			Profiles.update(id, { $pull: { 'enrolledChallangesIDs': challangeID }, $push: { 'completedChallangesIDs': challangeID }, $inc: { 'numberOfEnrolledChallanges' : -1, 'numberOfCompletedChallanges': 1} });
+			Meteor.call('challangeComplete', eventID, profile._id, function (error, result) {
+				Meteor.call('increasePoints', id, result);
+			});
 		} else {
 			throw new Meteor.Error(424, 'Not Enrolled in Challange');
 		}
@@ -126,10 +129,29 @@ Meteor.methods({
 		var found = Profiles.findOne(id);
 		if (found.enrolledEventsIDs.indexOf(eventID) !== -1) {
 			Profiles.update(id, { $pull: { 'enrolledEventsIDs': eventID }, $push: { 'completedEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : -1, 'numberOfCompletedEvents': 1} });
+			Meteor.call('eventComplete', eventID, profile._id, function (error, result) {
+				Meteor.call('increasePoints', id, result);
+			});
 		} else {
 			throw new Meteor.Error(424, 'Not Enrolled in Event');
 		}
 	},
+
+	completeCheckIn: function(id, checkpointID) {
+		var found = Profiles.findOne(id);
+		if (found.todaysCheckIns.indexOf(checkpointID) > -1){
+			throw new Meteor.Error(426, 'You have already checked into this location today');
+		}
+
+		var checkpoint = Checkpoints.findOne(checkpointID);
+
+		//This will update the checkpoint and increase the users points
+		Meteor.call('checkpointComplete', checkpointID, profile._id, function (error, result) {
+			Meteor.call('increasePoints', id, result);
+		});
+
+		Profiles.update(id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
+	}
 	
 
 	//---------------------------------END OF PROFILE UPDATE METHODS-----------------------------------------//
