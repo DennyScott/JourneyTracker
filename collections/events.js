@@ -49,7 +49,7 @@ Meteor.methods({
 			Events.update(id, { $pull: { 'downVoterIDs': profile._id }, $inc: { 'downVotes': -1 } } );
 		}
 
-		Events.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
+		Events.update(id, { $inc: {'upVotes': 1}, $push: { 'upVoterIDs': profile._id } } );
 	},
 	
 	eventDownVote: function(id) {
@@ -67,7 +67,7 @@ Meteor.methods({
 			Events.update(id, { $pull: { 'upVoterIDs': profile._id }, $inc: { 'upVotes': -1 } } );
 		}
 
-		Events.update(id, {$inc: {'downVotes': 1}, $push{ 'downVoterIDs': profile._id } });
+		Events.update(id, { $inc: { 'downVotes': 1}, $push: { 'downVoterIDs': profile._id } } );
 	},
 
 	eventEnroll: function(id) {

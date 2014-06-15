@@ -51,7 +51,7 @@ Meteor.methods({
 			Challenges.update(id, { $pull: { 'downVoterIDs': profile._id }, $inc: { 'downVotes': -1 } } );
 		}
 
-		Challenges.update(id, {$inc: {'upVotes': 1}, $push{ 'upVoterIDs': profile._id } });
+		Challenges.update(id, { $inc: { 'upVotes': 1}, $push: { 'upVoterIDs': profile._id } });
 	},
 	
 	challengeDownVote: function(id) {
@@ -69,7 +69,7 @@ Meteor.methods({
 			Challenges.update(id, { $pull: { 'upVoterIDs': profile._id }, $inc: { 'upVotes': -1 } } );
 		}
 
-		Challenges.update(id, {$inc: {'downVotes': 1}, $push{ 'downVoterIDs': profile._id } });
+		Challenges.update(id, { $inc: { 'downVotes': 1}, $push: { 'downVoterIDs': profile._id } } );
 	},
 
 	challengeEnroll: function(id) {
