@@ -1,48 +1,111 @@
 <template name="home">
 <div class="container">
-	<div class="row"><div class="seeStats col-xs-12">
-		<button class="btn btn-default pull-right animated fadeIn" id="toggleStats">See Stats</button>
-	</div>
-</div>
 	<div class="row">
-		<div id="map-canvas" class="col-xs-12 col-md-12 animated slideInRight"></div>
-		<div class="stats col-md-4 col-xs-12" id="stats">
 
-			<ul class="list-group">
-				<li class="list-group-item">
-				<span class="badge">14</span>
-				<i class="fa fa-flag"></i> Total Challenges:
-				</li>
-				<li class="list-group-item">
-				<span class="badge">2</span>
-				<i class="fa fa-flag"></i> Current Challenges:
-				</li>
-			</ul>
+		<section>
+			<div class="container">
+				<div class="row buttonContent">
+					<div class="board animated fadeIn">
+						<div class="board-inner">
+							<ul class="nav nav-tabs" id="myTab">
+								<div class="liner"></div>
+								<li class="active">
+								<a href="#home" data-toggle="tab" data-home="map-overlay" title="welcome">
+									<span class="round-tabs one">
+										<i class="glyphicon glyphicon-home"></i>
+									</span> 
+								</a></li>
 
-			<ul class="list-group">
-				<li class="list-group-item">
-				<span class="badge">14</span>
-				<i class="fa fa-calendar"></i> Total Events:
-				</li>
-				<li class="list-group-item">
-				<span class="badge">2</span>
-				<i class="fa fa-calendar"></i> Current Events:
-				</li>
-			</ul>
+								<li><a href="#profile" class="tab-toggle" data-home="profile-overlay" data-toggle="tab" title="profile">
+									<span class="round-tabs two">
+										<i class="glyphicon glyphicon-user"></i>
+									</span> 
+								</a>
+								</li>
+								<li><a href="#messages" class="tab-toggle" data-home="message" data-toggle="tab" title="bootsnipp goodies">
+									<span class="round-tabs three">
+										<i class="glyphicon glyphicon-gift"></i>
+								</span> </a>
+								</li>
 
-			<div class="list-group">
-				<li class="list-group-item active">
-				<span class="badge">2</span>
-				<i class="fa fa-heart"></i> Total Moments of Glory:
-				</li>
+								<li><a href="#settings" class="tab-toggle" data-home="settings" data-toggle="tab" title="blah blah">
+									<span class="round-tabs four">
+										<i class="glyphicon glyphicon-comment"></i>
+									</span> 
+								</a></li>
 
-<a class="twitter-timeline" href="https://twitter.com/search?q=%23journeytoglory" data-widget-id="477970895563026432">Tweets about "#journeytoglory"</a>
+								<li><a href="#doner" class="tab-toggle"  data-home="doner" data-toggle="tab" title="completed">
+									<span class="round-tabs five">
+										<i class="glyphicon glyphicon-ok"></i>
+								</span> </a>
+								</li>
 
-				
-			
-			</div>	
+
+								<li class="pull-right"><a href="" id="toggleStats" data-toggle="tab" title="completed">
+									<span class="round-tabs five">
+										<i class="fa fa-info"></i>
+								</span> </a>
+								</li>
+
+							</ul>
+						</div>
+
+					</div>
 
 
+				</div>
+			</div>
+
+		</section>
+
+	</div>
+	<div class="row">
+		<div id="home-display">
+			<div id="map-overlay">
+			<div id="map-canvas" class="col-xs-12 col-md-12 animated slideInRight"></div>
+			<div class="stats col-md-4 col-xs-12" id="stats">
+
+				<ul class="list-group">
+					<li class="list-group-item">
+					<span class="badge">14</span>
+					<i class="fa fa-flag"></i> Total Challenges:
+					</li>
+					<li class="list-group-item">
+					<span class="badge">2</span>
+					<i class="fa fa-flag"></i> Current Challenges:
+					</li>
+				</ul>
+
+				<ul class="list-group">
+					<li class="list-group-item">
+					<span class="badge">14</span>
+					<i class="fa fa-calendar"></i> Total Events:
+					</li>
+					<li class="list-group-item">
+					<span class="badge">2</span>
+					<i class="fa fa-calendar"></i> Current Events:
+					</li>
+				</ul>
+
+				<div class="list-group">
+					<li class="list-group-item active">
+					<span class="badge">2</span>
+					<i class="fa fa-heart"></i> Total Moments of Glory:
+					</li>
+
+					<a class="twitter-timeline" href="https://twitter.com/search?q=%23journeytoglory" data-widget-id="477970895563026432">Tweets about "#journeytoglory"</a>
+
+
+
+				</div>	
+
+			</div>
+		</div>
+			<!--END OF MAP-CANVAS -->
+
+			<div id="profile-overlay" class="col-xs-12">
+				Hello there!
+			</div>
 
 		</div>
 	</div>

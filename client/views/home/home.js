@@ -1,6 +1,8 @@
+var infoOpen = false;
+
 Template.home.rendered = function() {
 
-	$('#map-canvas').height($(window).height()/1.3);
+	$('#map-canvas').height($(window).height()/1.35);
 	GoogleMaps.init(
 		{
 		'sensor': true, //optional
@@ -26,6 +28,7 @@ Template.home.rendered = function() {
     }
   }(document, "script", "twitter-wjs");
 
+	$('a[title]').tooltip();
 };
 
 function loadMap(){
@@ -97,31 +100,43 @@ function loadMap(){
 			$('.ui.modal').modal('show');
 		});
 	});
-
+$('#map-canvas').addClass('animated slideInRight');
 }
 }
 
 Template.home.events({
 	
 	'click #toggleStats' : function(e){
+		e.preventDefault();
 				var button = $('#toggleStats');
 				var map = $('#map-canvas');
 
-				if(button.html() === 'See Stats'){
-					button.html('Hide Stats');
+				if(!infoOpen){
 					map.removeClass('col-md-12');
 					map.addClass('col-md-8');
 						setTimeout(function(){
 							$('#stats').addClass('animated fadeIn show');
 						},400);
 					google.maps.event.trigger(map, 'resize');
+					infoOpen = true;
 				}else{
-					button.html('See Stats');
 					map.removeClass('col-md-8');
 					map.addClass('col-md-12');
 					$('#stats').removeClass('animated fadeIn show');
 					google.maps.event.trigger(map, 'resize');
+					infoOpen = false;
 				}
+			},
+
+			'click .tab-toggle' : function(e) {
+			 var priorDisplay =	$('#home-display').children(":first");
+			 priorDisplay.addClass('animated slideOutLeft');
+				
+				setTimeout(function() {
+					priorDisplay.hide();
+				  $('#' + $(e.currentTarget).attr('data-home')).addClass('animated slideInRight');
+
+				},500)				
 			}
 	
 });
