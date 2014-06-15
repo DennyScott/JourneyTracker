@@ -14,7 +14,7 @@ Meteor.methods({
 		}
 
 		//filling in other keys
-		var newCheckpoint = _.extend(_.pick(checkpointAttributes, 'name', 'description', 'type'), {
+		var newCheckpoint = _.extend(_.pick(checkpointAttributes, 'name', 'description', 'type', 'longditude', 'latitude'), {
 			//NEED TO DO VERIFACTION FOR TYPE!!!!!
 			createdTime: new Date().getTime(),
 			upVotes: 0,
@@ -85,7 +85,7 @@ Meteor.methods({
 		}
 		
 		Checkpoints.update(id, { $inc: { 'totalCheckIns': 1 }, $set: { 'lastCheckedInOn': now, 'lastCheckedIn': profile.userName }, $push : { 'todaysCheckIns' : profile._id } } );
-		Meteor.call('incrementPoints', profileID, points);
+		Meteor.call('incrementPoints', profileID, foundCheckpoint.points);
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//

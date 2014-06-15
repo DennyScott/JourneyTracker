@@ -151,9 +151,9 @@ Meteor.methods({
 		var checkpoint = Checkpoints.findOne(checkpointID);
 
 		//This will update the checkpoint and increase the users points
-		Meteor.call('checkpointComplete', checkpointID, profile._id);
+		Meteor.call('checkpointComplete', checkpointID, found._id);
 
-		Profiles.update(id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
+		Profiles.update(found._id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
 	},
 
 	//---------------------------------END OF PROFILE UPDATE METHODS-----------------------------------------//
