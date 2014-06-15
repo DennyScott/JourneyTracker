@@ -85,7 +85,7 @@ Meteor.methods({
 		}
 		
 		Checkpoints.update(id, { $inc: { 'totalCheckIns': 1 }, $set: { 'lastCheckedInOn': now, 'lastCheckedIn': profile.userName }, $push : { 'todaysCheckIns' : profile._id } } );
-		return foundCheckpoint.points;
+		Meteor.call('incrementPoints', profileID, points);
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//

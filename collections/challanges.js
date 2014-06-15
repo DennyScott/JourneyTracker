@@ -80,8 +80,9 @@ Meteor.methods({
 	challengeComplete: function(id, profileID) {
 		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;
+		var chal = Challenges.findOne(id);
 		Challenges.update(id, { $inc: { 'numberOfEnrolls': -1, 'numberOfCompleted': 1 }, $set: { 'lastCompletedOn': now, 'lastCompletedBy': profile.userName } } );
-		return points;
+		Meteor.call('incrementPoints', profileID, chal.points);
 	},
 
 	updateChallengeName: function(id, name){

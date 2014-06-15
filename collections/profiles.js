@@ -50,30 +50,38 @@ Meteor.methods({
 
 	//-----------------------------------PROFILE UPDATE METHODS----------------------------------------------//
 	
-	updateLastLoggedIn: function(id) {
-		var user = Meteor.user();
+	updateLastLoggedIn: function() {
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		var now = new Date().getTime;
-		Profiles.update(id, {$set: {'lastLoggedIn': now}});
+		Profiles.update(found._id, {$set: {'lastLoggedIn': now}});
 	},
 
-	updateLastCheckIn: function(id) {
-		var user = Meteor.user();
+	updateLastCheckIn: function() {
+
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		var now = new Date().getTime;
-		Profiles.update(id, {$set: {'lastCheckIn': now}});
+		Profiles.update(found._id, {$set: {'lastCheckIn': now}});
 	},
 	
-	updateProfileFirstName: function(id, name) {
-		Profiles.update(id, {$set: {'firstName': name}});
+	updateProfileFirstName: function(name) {
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
+		Profiles.update(found._id, {$set: {'firstName': name}});
 	},
 
-	updateProfileLastName: function(id, name) {
-		Profiles.update(id, {$set: {'lastName': name}});
+	updateProfileLastName: function(name) {
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
+		Profiles.update(found._id, {$set: {'lastName': name}});
 	},
 
-	updateProfileUserName: function(id, name) {
-		var found = Profiles.findOne({'userName' : name});
+	updateProfileUserName: function(name) {
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if(!found){
-			Profiles.update(id, {$set: {'userName': name}});
+			Profiles.update(found._id, {$set: {'userName': name}});
 		} else {
 			throw new Meteor.Error(423, 'Username already used by another user');
 		}
@@ -83,56 +91,59 @@ Meteor.methods({
 		Profiles.update(id, {$inc: {'points': points}});
 	},
 
-	levelUp: function(id){
-		Profiles.update(id, {$inc: {'level': 1}});
+	levelUp: function(){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
+		Profiles.update(found._id, {$inc: {'level': 1}});
 	},
 
-	enrollInChallenge: function(id, challengeID){
-		var found = Profiles.findOne(id);
+	enrollInChallenge: function(challengeID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if (found.enrolledChallengesIDs.indexOf(challengeID) === -1) {
-			Profiles.update(id, { $push: { 'enrolledChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : 1} });
+			Profiles.update(found._id, { $push: { 'enrolledChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : 1} });
 			Meteor.call('challengeEnroll', challengeID);
 		} else {
 			throw new Meteor.Error(424, 'Already Enrolled in Challenge');
 		}
 	},
 
-	enrollInEvent: function(id, eventID){
-		var found = Profiles.findOne(id);
+	enrollInEvent: function(eventID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if (found.enrolledEventsIDs.indexOf(eventID) === -1) {
-			Profiles.update(id, { $push: { 'enrolledEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : 1} });
+			Profiles.update(found._id, { $push: { 'enrolledEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : 1} });
 			Meteor.call('eventEnroll', eventID);
 		} else {
 			throw new Meteor.Error(424, 'Already Enrolled in Event');
 		}
 	},
 
-	completeChallenge: function(id, challengeID){
-		var found = Profiles.findOne(id);
+	completeChallenge: function(challengeID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if (found.enrolledChallengesIDs.indexOf(challengeID) !== -1) {
-			Profiles.update(id, { $pull: { 'enrolledChallengesIDs': challengeID }, $push: { 'completedChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : -1, 'numberOfCompletedChallenges': 1} });
-			Meteor.call('challengeComplete', eventID, profile._id, function (error, result) {
-				Meteor.call('incrementPoints', id, result);
-			});
+			Profiles.update(found._id, { $pull: { 'enrolledChallengesIDs': challengeID }, $push: { 'completedChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : -1, 'numberOfCompletedChallenges': 1} });
+			Meteor.call('challengeComplete', challengeID, found._id);
 		} else {
 			throw new Meteor.Error(424, 'Not Enrolled in Challenge');
 		}
 	},
 
-	completeEvent: function(id, eventID){
-		var found = Profiles.findOne(id);
+	completeEvent: function(eventID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if (found.enrolledEventsIDs.indexOf(eventID) !== -1) {
-			Profiles.update(id, { $pull: { 'enrolledEventsIDs': eventID }, $push: { 'completedEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : -1, 'numberOfCompletedEvents': 1} });
-			Meteor.call('eventComplete', eventID, profile._id, function (error, result) {
-				Meteor.call('incrementPoints', id, result);
-			});
+			Profiles.update(found._id, { $pull: { 'enrolledEventsIDs': eventID }, $push: { 'completedEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : -1, 'numberOfCompletedEvents': 1} });
+			Meteor.call('eventComplete', eventID, found._id);
 		} else {
 			throw new Meteor.Error(424, 'Not Enrolled in Event');
 		}
 	},
 
-	completeCheckIn: function(id, checkpointID) {
-		var found = Profiles.findOne(id);
+	completeCheckIn: function(checkpointID) {
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
 		if (found.todaysCheckIns.indexOf(checkpointID) > -1){
 			throw new Meteor.Error(426, 'You have already checked into this location today');
 		}
@@ -140,9 +151,7 @@ Meteor.methods({
 		var checkpoint = Checkpoints.findOne(checkpointID);
 
 		//This will update the checkpoint and increase the users points
-		Meteor.call('checkpointComplete', checkpointID, profile._id, function (error, result) {
-			Meteor.call('incrementPoints', id, result);
-		});
+		Meteor.call('checkpointComplete', checkpointID, profile._id);
 
 		Profiles.update(id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
 	},

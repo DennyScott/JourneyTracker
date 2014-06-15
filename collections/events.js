@@ -81,8 +81,9 @@ Meteor.methods({
 	eventComplete: function(id, profileID) {
 		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;
+		var ev = Events.findOne(id);
 		Events.update(id, { $inc: { 'numberOfCompleted': 1 } } );
-		return points;
+		Meteor.call('incrementPoints', profileID, ev.points);
 	},
 
 	updateEventName: function(id, name){
