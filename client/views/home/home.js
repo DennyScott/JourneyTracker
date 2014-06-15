@@ -44,7 +44,7 @@ function loadMap(){
 	 * the order in which these markers should display on top of each
 	 * other.
 	 */
-	var beaches = [
+	var eventsAndChallenges = [
 		['Bondi Beach', 49.8964, -97.1392, 4],
 		['Coogee Beach', 49.8794, -97.1392, 5],
 		['Cronulla Beach', 49.8894, -97.1392, 3],
@@ -79,16 +79,16 @@ function loadMap(){
 		coords: [1, 1, 1, 20, 18, 20, 18 , 1],
 		type: 'poly'
 	};
-	for (var i = 0; i < beaches.length; i++) {
-		var beach = beaches[i];
-		var myLatLng = new google.maps.LatLng(beach[1], beach[2]);
+	for (var i = 0; i < eventsAndChallenges.length; i++) {
+		var eAndC = eventsAndChallenges[i];
+		var myLatLng = new google.maps.LatLng(eAndC[1], eAndC[2]);
 		var marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
 			shape: shape,
 			animation: google.maps.Animation.DROP,
-			title: beach[0],
-			zIndex: beach[3]
+			title: eAndC[0],
+			zIndex: eAndC[3]
 		});
 	
 	var infowindow = new google.maps.InfoWindow({
@@ -129,14 +129,14 @@ Template.home.events({
 			},
 
 			'click .tab-toggle' : function(e) {
-			 var priorDisplay =	$('#home-display').children(":first");
+			 var priorDisplay =	$('#home-display').find(".activeOverlay");
 			 priorDisplay.addClass('animated slideOutLeft');
 				
 				setTimeout(function() {
-					priorDisplay.hide();
-				  $('#' + $(e.currentTarget).attr('data-home')).addClass('animated slideInRight');
+						priorDisplay.removeClass('activeOverlay animated slideOutLeft');
+				  $('#' + $(e.currentTarget).attr('data-home')).addClass('animated slideInRight activeOverlay');
 
-				},500)				
+				},500);				
 			}
 	
 });
