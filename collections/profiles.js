@@ -13,7 +13,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, "You need to log in to create new profiles");
 		}
 
-		var found = Profiles.findOne({'userName' : name});
+		var found = Profiles.findOne({'userName' : profileAttributes.userName});
 
 		if(found){
 			throw new Meteor.Error(423, 'Username already used by another user');
@@ -24,13 +24,13 @@ Meteor.methods({
 			points: 0,
 			level: 1,
 			userID: user._id,
-			numberOfEnrolledChallanges: 0,
+			numberOfEnrolledChallenges: 0,
 			numberOfEnrolledEvents: 0,
-			numberOfCompletedChallanges: 0,
+			numberOfCompletedChallenges: 0,
 			numberOfCompletedEvents: 0,
-			enrolledChallangesIDs: [],
+			enrolledChallengesIDs: [],
 			enrolledEventsIDs: [],
-			completedChallangesIDs: [],
+			completedChallengesIDs: [],
 			completedEventsIDs: [],
 			inventory: [],
 			lastLoggedIn: new Date().getTime(),
@@ -79,28 +79,21 @@ Meteor.methods({
 		}
 	},
 
-	increasePoints: function(id, points){
-		var totalPoints = found.points + points;
-		Profiles.update(id, {$set: {'points': totalPoints}});
+	incrementPoints: function(id, points){
+		Profiles.update(id, {$inc: {'points': points}});
 	},
 
-	decreasePoints: function(id, points){
-		var totalPoints = found.points - points;
-		Profiles.update(id, {$set: {'points': totalPoints}});
+	levelUp: function(id){
+		Profiles.update(id, {$inc: {'level': 1}});
 	},
 
-	increaseLevel: function(id){
+	enrollInChallenge: function(id, challengeID){
 		var found = Profiles.findOne(id);
-		var level = found.level + 1;
-		Profiles.update(id, {$set: {'level': level}});
-	},
-
-	enrollInChallange: function(id, challangeID){
-		var found = Profiles.findOne(id);
-		if (found.enrolledChallangesIDs.indexOf(challangeID) === -1) {
-			Profiles.update(id, { $push: { 'enrolledChallangesIDs': challangeID }, $inc: { 'numberOfEnrolledChallanges' : 1} });
+		if (found.enrolledChallengesIDs.indexOf(challengeID) === -1) {
+			Profiles.update(id, { $push: { 'enrolledChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : 1} });
+			Meteor.call('challengeEnroll', challengeID);
 		} else {
-			throw new Meteor.Error(424, 'Already Enrolled in Challange');
+			throw new Meteor.Error(424, 'Already Enrolled in Challenge');
 		}
 	},
 
@@ -108,20 +101,21 @@ Meteor.methods({
 		var found = Profiles.findOne(id);
 		if (found.enrolledEventsIDs.indexOf(eventID) === -1) {
 			Profiles.update(id, { $push: { 'enrolledEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : 1} });
+			Meteor.call('eventEnroll', eventID);
 		} else {
 			throw new Meteor.Error(424, 'Already Enrolled in Event');
 		}
 	},
 
-	completeChallange: function(id, challangeID){
+	completeChallenge: function(id, challengeID){
 		var found = Profiles.findOne(id);
-		if (found.enrolledChallangesIDs.indexOf(challangeID) !== -1) {
-			Profiles.update(id, { $pull: { 'enrolledChallangesIDs': challangeID }, $push: { 'completedChallangesIDs': challangeID }, $inc: { 'numberOfEnrolledChallanges' : -1, 'numberOfCompletedChallanges': 1} });
-			Meteor.call('challangeComplete', eventID, profile._id, function (error, result) {
-				Meteor.call('increasePoints', id, result);
+		if (found.enrolledChallengesIDs.indexOf(challengeID) !== -1) {
+			Profiles.update(id, { $pull: { 'enrolledChallengesIDs': challengeID }, $push: { 'completedChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : -1, 'numberOfCompletedChallenges': 1} });
+			Meteor.call('challengeComplete', eventID, profile._id, function (error, result) {
+				Meteor.call('incrementPoints', id, result);
 			});
 		} else {
-			throw new Meteor.Error(424, 'Not Enrolled in Challange');
+			throw new Meteor.Error(424, 'Not Enrolled in Challenge');
 		}
 	},
 
@@ -130,7 +124,7 @@ Meteor.methods({
 		if (found.enrolledEventsIDs.indexOf(eventID) !== -1) {
 			Profiles.update(id, { $pull: { 'enrolledEventsIDs': eventID }, $push: { 'completedEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : -1, 'numberOfCompletedEvents': 1} });
 			Meteor.call('eventComplete', eventID, profile._id, function (error, result) {
-				Meteor.call('increasePoints', id, result);
+				Meteor.call('incrementPoints', id, result);
 			});
 		} else {
 			throw new Meteor.Error(424, 'Not Enrolled in Event');
@@ -147,12 +141,11 @@ Meteor.methods({
 
 		//This will update the checkpoint and increase the users points
 		Meteor.call('checkpointComplete', checkpointID, profile._id, function (error, result) {
-			Meteor.call('increasePoints', id, result);
+			Meteor.call('incrementPoints', id, result);
 		});
 
 		Profiles.update(id, { $push: { 'todaysCheckIns': checkpointID }, $inc: { 'todaysTotalCheckIns' : 1 } } );
 	},
-	
 
 	//---------------------------------END OF PROFILE UPDATE METHODS-----------------------------------------//
 

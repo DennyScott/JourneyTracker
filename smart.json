@@ -4,6 +4,9 @@
     "accounts-entry": {},
     "bootstrap-3": {},
     "twit": {},
-    "googlemaps": {}
+    "googlemaps": {},
+    "semantic-ui": {},
+    "font-awesome": {},
+    "animate-css": {}
   }
 }

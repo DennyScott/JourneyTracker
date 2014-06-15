@@ -8,13 +8,15 @@ Meteor.methods({
 
 		var user = Meteor.user();
 
+		var foundProfile = Profiles.find( { 'userID': user._id } );
+
 		//Ensures that the user is logged in
 		if (!user){
 			throw new Meteor.Error(401, "You need to log in to create new events");
 		}
 
 		//filling in other keys
-		var newEvent = _.extend(_.pick(eventAttributes, 'name', 'description', 'eventDate', 'completionDate'), {
+		var newEvent = _.extend(_.pick(eventAttributes, 'name', 'description', 'eventDate', 'completionDate', 'longditude', 'latitude'), {
 			createdTime: new Date().getTime(),
 			upVotes: 0,
 			downVotes: 0,
@@ -22,7 +24,8 @@ Meteor.methods({
 			downVoterIDs: [],
 			numberOfEnrolls: 0,
 			numberOfCompleted: 0,
-			points: 50
+			points: 50,
+			createdBy: foundProfile._id
 		});
 
 		//Inserts new project into collection
@@ -42,7 +45,7 @@ Meteor.methods({
 
 		//If the user has already upvoted, this will dissallow them from upvoting again
 		if(foundEvent.upVoterIDs.indexOf(profile._id) > -1){
-			throw new Meteor.Error(425, 'User has already up voted'); 
+			throw new Meteor.Error(425, 'User has already up voted');
 		}
 
 		//In case the user had downvoted, this takes the downvote away
@@ -80,6 +83,26 @@ Meteor.methods({
 		var now = new Date().getTime;
 		Events.update(id, { $inc: { 'numberOfCompleted': 1 } } );
 		return points;
+	},
+
+	updateEventName: function(id, name){
+		Events.update(id, { $set: { 'name' : name } } );
+	},
+
+	updateEventDescription: function(id, description){
+		Events.update(id, { $set: { 'description' : description } } );
+	},
+
+	updateEventDate: function(id, newDate) {
+		Events.update(id, { $set: { 'eventDate' : newDate } } );
+	},
+
+	updateEventCompletionDate: function(id, newDate) {
+		Events.update(id, { $set: { 'completionDate' : newDate } } );
+	},
+
+	updateEventPoints: function(id, points){
+		Events.update(id, { $set: { 'points' : points } } );
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//

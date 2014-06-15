@@ -14,7 +14,7 @@ Meteor.methods({
 		}
 
 		//filling in other keys
-		var newChallenge = _.extend(_.pick(challengeAttributes, 'name', 'description', 'isTimed', 'time'), {
+		var newChallenge = _.extend(_.pick(challengeAttributes, 'name', 'description', 'isTimed', 'time', 'longditude', 'latitude'), {
 			createdTime: new Date().getTime(),
 			upVotes: 0,
 			downVotes: 0,
@@ -24,7 +24,7 @@ Meteor.methods({
 			numberOfCompleted: 0,
 			lastCompletedBy: "No One",
 			lastCompletedOn: new Date().getTime(),
-			points: 25
+			points: 25,
 		});
 
 		//Inserts new project into collection
@@ -62,7 +62,7 @@ Meteor.methods({
 
 		//If the user has already downvoted, this will disallow them from upvoting again
 		if(foundChallenge.downVoterIDs.indexOf(profile._id) > -1){
-			throw new Meteor.Error(425, 'User has already up voted'); 
+			throw new Meteor.Error(425, 'User has already up voted');
 		}
 
 		//In case the user had upvoted, this takes the upvote away
@@ -82,6 +82,26 @@ Meteor.methods({
 		var now = new Date().getTime;
 		Challenges.update(id, { $inc: { 'numberOfEnrolls': -1, 'numberOfCompleted': 1 }, $set: { 'lastCompletedOn': now, 'lastCompletedBy': profile.userName } } );
 		return points;
+	},
+
+	updateChallengeName: function(id, name){
+		Challenges.update(id, { $set: { 'name' : name } } );
+	},
+
+	updateChallengeDescription: function(id, description){
+		Challenges.update(id, { $set: { 'description' : description } } );
+	},
+
+	updateChallengePoints: function(id, points){
+		Challenges.update(id, { $set: { 'points' : points } } );
+	},
+
+	updateChallengeIsTimed: function(id, isTimed){
+		Challenges.update(id, { $set : { 'isTimed' : isTimed } } );
+	},
+
+	updateChallengeTime: function(id, time) {
+		Challenges.update(id, { $set : { 'time' : time } } );
 	},
 
 	//---------------------------------END OF EVENTS UPDATE METHODS-----------------------------------------//
