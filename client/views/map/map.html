@@ -1,0 +1,73 @@
+<template name="map">
+<div class="row">
+
+		<section>
+			<div class="container">
+				<div class="row buttonContent">
+					<div class="board animated fadeIn">
+						<div class="board-inner">
+							<ul class="nav nav-tabs" id="myTab">
+								<div class="liner"></div>
+								<li class="active">
+								<a href="#" class="tab-toggle" data-toggle="tab" data-home="map-overlay" title="Map">
+									<span class="round-tabs one">
+										<i class="glyphicon glyphicon-home"></i>
+									</span> 
+								</a></li>
+
+								<li><a href="#" class="tab-toggle" data-home="challenge-overlay" data-toggle="tab" title="Challenge">
+									<span class="round-tabs two">
+										<i class="fa fa-flag"></i>
+									</span> 
+								</a>
+								</li>
+								<li><a href="#" class="tab-toggle" data-home="event-overlay" data-toggle="tab" title="Events">
+									<span class="round-tabs three">
+										<i class="fa fa-calendar"></i>
+								</span> </a>
+								</li>
+
+								<li><a href="#" class="tab-toggle" data-home="create-overlay" data-toggle="tab" title="Creation Zone">
+									<span class="round-tabs four">
+										<i class="fa fa-edit"></i>
+									</span> 
+								</a></li>
+
+								<li><a href="#" class="tab-toggle"  data-home="checkIn-overlay" data-toggle="tab" title="Check In">
+									<span class="round-tabs five">
+										<i class="fa fa-map-marker"></i>
+								</span> </a>
+								</li>
+
+
+								<li class="pull-right"><a href="" id="toggleStats" data-toggle="tab" title="Info">
+									<span class="round-tabs five">
+										<i class="fa fa-info"></i>
+								</span> </a>
+								</li>
+
+							</ul>
+						</div>
+
+					</div>
+
+
+				</div>
+			</div>
+
+		</section>
+
+	</div>
+	<div class="row">
+		<div id="home-display">
+			{{> mapOverlay}}
+			<!--END OF MAP-CANVAS -->
+			{{> challengeOverlay}}
+			{{> eventOverlay}}
+			{{> createOverlay}}
+			{{> checkInOverlay}}
+
+		</div>
+	</div>
+
+</template>
