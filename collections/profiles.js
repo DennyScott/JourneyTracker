@@ -6,24 +6,26 @@ Meteor.methods({
 
 	addProfile: function(profileAttributes){
 
-		var user = Meteor.user();
+		// var user = Meteor.user();
 
 		//Ensures that the user is logged in
-		if (!user){
-			throw new Meteor.Error(401, "You need to log in to create new profiles");
-		}
+		// if (!user){
+		// 	throw new Meteor.Error(401, "You need to log in to create new profiles");
+		// }
 
 		var found = Profiles.findOne({'userName' : profileAttributes.userName});
 
-		if(found){
-			throw new Meteor.Error(423, 'Username already used by another user');
-		}
+		// if(found){
+		// 	throw new Meteor.Error(423, 'Username already used by another user');
+		// }
+		// 
+		console.log("Adding Profile...");
 
 		//filling in other keys
-		var profile = _.extend(_.pick(profileAttributes, 'firstName', 'lastName', 'userName'), {
+		var profile = _.extend(_.pick(profileAttributes, 'firstName', 'lastName', 'userName', 'userID'), {
 			points: 0,
 			level: 1,
-			userID: user._id,
+			// userID: user._id,
 			numberOfEnrolledChallenges: 0,
 			numberOfEnrolledEvents: 0,
 			numberOfCompletedChallenges: 0,

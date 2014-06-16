@@ -9,6 +9,7 @@
     "font-awesome": {},
     "animate-css": {},
     "moment": {},
-    "bootstrap3-datetimepicker": {}
+    "bootstrap3-datetimepicker": {},
+    "accounts-ui-bootstrap-dropdown": {}
   }
 }

@@ -11,7 +11,8 @@
       "font-awesome": {},
       "animate-css": {},
       "moment": {},
-      "bootstrap3-datetimepicker": {}
+      "bootstrap3-datetimepicker": {},
+      "accounts-ui-bootstrap-dropdown": {}
     },
     "packages": {
       "iron-router": {
@@ -63,6 +64,11 @@
         "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
         "tag": "v0.0.5",
         "commit": "30b5fa0759f98b75761772ad891876408f7cc8c4"
+      },
+      "accounts-ui-bootstrap-dropdown": {
+        "git": "https://github.com/erobit/meteor-accounts-ui-bootstrap-dropdown.git",
+        "tag": "v0.8.3",
+        "commit": "a7af8a52e4e74db020a69b158a8f992797b8b0b0"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
