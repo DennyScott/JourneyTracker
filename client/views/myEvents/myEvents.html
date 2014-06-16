@@ -1,3 +1,23 @@
 <template name="myEvents">
-	This is my Events.
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Event Name</th>
+				<th>Points</th>	
+				<th>Event Date</th>
+				<th>Total Enrolled</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each userEvents}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{points}}</td>
+					<td>{{eventDate}}</td>
+					<td>{{numberOfEnrolls}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+
 </template>

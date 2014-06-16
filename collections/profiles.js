@@ -108,6 +108,17 @@ Meteor.methods({
 		}
 	},
 
+	dismissChallenge: function(challengeID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
+		if (found.enrolledChallengesIDs.indexOf(challengeID) !== -1) {
+			Profiles.update(found._id, { $pull: { 'enrolledChallengesIDs': challengeID }, $inc: { 'numberOfEnrolledChallenges' : -1} });
+			Meteor.call('challengeDismiss', challengeID);
+		} else {
+			throw new Meteor.Error(424, 'Not Enrolled in Challenge');
+		}
+	},
+
 	enrollInEvent: function(eventID){
 		var userid = Meteor.user()._id;
 		var found = Profiles.findOne( { 'userID': userid } );
@@ -116,6 +127,17 @@ Meteor.methods({
 			Meteor.call('eventEnroll', eventID);
 		} else {
 			throw new Meteor.Error(424, 'Already Enrolled in Event');
+		}
+	},
+
+	dismissEvent: function(eventID){
+		var userid = Meteor.user()._id;
+		var found = Profiles.findOne( { 'userID': userid } );
+		if (found.enrolledEventsIDs.indexOf(eventID) !== -1) {
+			Profiles.update(found._id, { $pull: { 'enrolledEventsIDs': eventID }, $inc: { 'numberOfEnrolledEvents' : -1} });
+			Meteor.call('eventDismiss', eventID);
+		} else {
+			throw new Meteor.Error(424, 'Not Enrolled in Event');
 		}
 	},
 

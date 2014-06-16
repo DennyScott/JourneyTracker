@@ -77,6 +77,10 @@ Meteor.methods({
 		Challenges.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
 	},
 
+	challengeDismiss: function(id) {
+		Challenges.update(id, { $inc: { 'numberOfEnrolls': -1 } } );
+	},
+
 	challengeComplete: function(id, profileID) {
 		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;

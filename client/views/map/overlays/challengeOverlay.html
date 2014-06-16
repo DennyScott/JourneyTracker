@@ -1,5 +1,33 @@
 <template name="challengeOverlay">
-<div id="challenge-overlay" class="col-xs-12 overlay">
-	Hello there!
-</div>
+	<div id="challenge-overlay" class="col-xs-12 overlay">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Challenge Name</th>
+					<th>Points</th>	
+					<th>Distance</th>
+					<th>Total Enrolled</th>
+					<th>Total Completed</th>
+					<th>Enroll</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each soonChallenges}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{points}}</td>
+					<td>-----</td>
+					<td>{{numberOfEnrolls}}</td>
+					<td>{{numberOfCompleted}}</td>
+					{{#if enrolled}}
+					<td><button class="btn btn-primary enroll" id="{{_id}}">Dismiss</button></td>
+					{{else}}
+					<td><button class="btn btn-info enroll" id="{{_id}}">Enroll</button></td>
+					{{/if}}
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+
+	</div>
 </template>

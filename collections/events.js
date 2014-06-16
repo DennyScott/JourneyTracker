@@ -78,6 +78,10 @@ Meteor.methods({
 		Events.update(id, { $inc: { 'numberOfEnrolls': 1 } } );
 	},
 
+	eventDismiss: function(id) {
+		Events.update(id, { $inc: { 'numberOfEnrolls': -1 } } );
+	},
+
 	eventComplete: function(id, profileID) {
 		var profile = Profiles.findOne(profileID);
 		var now = new Date().getTime;
