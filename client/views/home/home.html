@@ -1,5 +1,25 @@
 <template name="home">
-<div class="container">
+<div class="container" id="pages">
+	<div id="map-page" class="page activePage">
 	{{> map}}
+</div>
+
+<div id="myChallenges-page" class="page">
+	{{> myChallenges}}
+</div>
+
+<div id="myEvents-page" class="page">
+	{{> myEvents}}
+</div>
+
+<div id="momentsOfGlory-page" class="page">
+	{{> momentsOfGlory}}
+</div>
+
+<div id="inventory-page" class="page">
+	{{> inventory}}
+</div>
+
+
 	</div>
 </template>
