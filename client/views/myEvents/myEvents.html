@@ -6,6 +6,8 @@
 				<th>Points</th>	
 				<th>Event Date</th>
 				<th>Total Enrolled</th>
+				<th>Dismiss</th>
+				<th>Complete</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -15,6 +17,8 @@
 					<td>{{points}}</td>
 					<td>{{eventDate}}</td>
 					<td>{{numberOfEnrolls}}</td>
+					<td><button class="btn btn-primary dismiss" id="{{_id}}">Dismiss</button></td>
+					<td><button class="btn btn-success complete" id="{{_id}}">Complete</button></td>
 				</tr>
 			{{/each}}
 		</tbody>

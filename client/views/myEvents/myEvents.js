@@ -5,3 +5,15 @@ Template.myEvents.helpers({
 		}
 	}
 });
+
+Template.myEvents.events({
+	'click .complete': function (e) {
+		var eventID = $(e.currentTarget).attr('id');
+		Meteor.call("completeEvent", eventID );
+	},
+
+	'click .dismiss': function (e) {
+		var eventID = $(e.currentTarget).attr('id');
+		Meteor.call("dismissEvent", eventID );
+	}
+});
