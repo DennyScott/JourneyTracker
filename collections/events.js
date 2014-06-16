@@ -16,7 +16,7 @@ Meteor.methods({
 		}
 
 		//filling in other keys
-		var newEvent = _.extend(_.pick(eventAttributes, 'name', 'description', 'eventDate', 'completionDate', 'longitude', 'latitude'), {
+		var newEvent = _.extend(_.pick(eventAttributes, 'name', 'description', 'eventDate', 'longitude', 'latitude'), {
 			createdTime: new Date().getTime(),
 			upVotes: 0,
 			downVotes: 0,
