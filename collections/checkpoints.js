@@ -14,7 +14,7 @@ Meteor.methods({
 		}
 
 		//filling in other keys
-		var newCheckpoint = _.extend(_.pick(checkpointAttributes, 'name', 'description', 'type', 'longditude', 'latitude'), {
+		var newCheckpoint = _.extend(_.pick(checkpointAttributes, 'name', 'description', 'type', 'longitude', 'latitude'), {
 			//NEED TO DO VERIFACTION FOR TYPE!!!!!
 			createdTime: new Date().getTime(),
 			upVotes: 0,

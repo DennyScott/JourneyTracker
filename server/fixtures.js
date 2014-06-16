@@ -33,7 +33,7 @@ if(Meteor.users.find().count() === 0) {
 		var newChallenge = {
 			name: "Hike Trail",
 			description: "An easy trail with a very light hill at the end",
-			longditude: 49.8964,
+			longitude: 49.8964,
 			latitude: -97.1392,
 			createdTime: new Date().getTime(),
 			upVotes: 0,
@@ -53,7 +53,7 @@ if(Meteor.users.find().count() === 0) {
 		newChallenge = {
 			name: "Bike Path",
 			description: "This path goes through a nice shaded area",
-			longditude: 49.8794,
+			longitude: 49.8794,
 			latitude: -97.1392,
 			createdTime: new Date().getTime(),
 			upVotes: 0,
@@ -73,7 +73,7 @@ if(Meteor.users.find().count() === 0) {
 		newChallenge = {
 			name: "Easy Hike Trail",
 			description: "No real elevation, just a nice walk",
-			longditude: 49.8894,
+			longitude: 49.8894,
 			latitude: -97.1392,
 			createdTime: new Date().getTime(),
 			upVotes: 0,
@@ -93,7 +93,7 @@ if(Meteor.users.find().count() === 0) {
 		newChallenge = {
 			name: "500m Sprint",
 			description: "Sprinted around the track for 500m",
-			longditude: 49.8894,
+			longitude: 49.8894,
 			latitude: -97.1592,
 			createdTime: new Date().getTime(),
 			upVotes: 0,
@@ -113,7 +113,7 @@ if(Meteor.users.find().count() === 0) {
 		newChallenge = {
 			name: "500m Swim",
 			description: "Any style swim",
-			longditude: 49.8794,
+			longitude: 49.8794,
 			latitude: -97.1592,
 			createdTime: new Date().getTime(),
 			upVotes: 0,
