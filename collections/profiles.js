@@ -22,7 +22,10 @@ Meteor.methods({
 		console.log("Adding Profile...");
 
 		//filling in other keys
-		var profile = _.extend(_.pick(profileAttributes, 'firstName', 'lastName', 'userName', 'userID'), {
+		var profile = _.extend(_.pick(profileAttributes, 'userID'), {
+			firstName: capitaliseFirstLetter(profileAttributes.firstName),
+			lastName: capitaliseFirstLetter(profileAttributes.lastName),
+			userName: capitaliseFirstLetter(profileAttributes.userName),
 			points: 0,
 			level: 1,
 			// userID: user._id,
@@ -70,20 +73,20 @@ Meteor.methods({
 	updateProfileFirstName: function(name) {
 		var userid = Meteor.user()._id;
 		var found = Profiles.findOne( { 'userID': userid } );
-		Profiles.update(found._id, {$set: {'firstName': name}});
+		Profiles.update(found._id, {$set: {'firstName': capitaliseFirstLetter(name) }});
 	},
 
 	updateProfileLastName: function(name) {
 		var userid = Meteor.user()._id;
 		var found = Profiles.findOne( { 'userID': userid } );
-		Profiles.update(found._id, {$set: {'lastName': name}});
+		Profiles.update(found._id, {$set: {'lastName':  capitaliseFirstLetter(name)}});
 	},
 
 	updateProfileUserName: function(name) {
 		var userid = Meteor.user()._id;
 		var found = Profiles.findOne( { 'userID': userid } );
 		if(!found){
-			Profiles.update(found._id, {$set: {'userName': name}});
+			Profiles.update(found._id, {$set: {'userName':  capitaliseFirstLetter(name) }});
 		} else {
 			throw new Meteor.Error(423, 'Username already used by another user');
 		}
