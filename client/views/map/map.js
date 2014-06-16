@@ -44,7 +44,6 @@ function loadMap(){
 	var i = 1;
 	var eventsAndChallenges = [];
 	challenges.forEach(function (chal) {
-		console.log("Hello");
 		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.longitude, chal.latitude, i];
 		i++;
 	});
@@ -137,6 +136,11 @@ Template.map.events({
 				$('#toggleStats').fadeIn();
 			}else{
 				$('#toggleStats').fadeOut();
+			}
+
+			if($(e.currentTarget).attr('data-home') === 'create-overlay'){
+				console.log('here');
+				google.maps.event.trigger(selectionMap, 'resize');
 			}
 
 		},500);				
