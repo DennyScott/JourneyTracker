@@ -88,13 +88,13 @@ function loadMap(){
 	var eventsAndChallenges = [];
 
 	challenges.forEach(function (chal) {
-		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.latitude, chal.longitude, i, challengeImage];
+		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.latitude, chal.longitude, i, challengeImage, chal.description];
 		challengeIds.push(chal._id);
 		i++;
 	});
 
 		events.forEach(function (evt) {
-		eventsAndChallenges[eventsAndChallenges.length] = [evt.name, evt.latitude, evt.longitude, i, eventImage];
+		eventsAndChallenges[eventsAndChallenges.length] = [evt.name, evt.latitude, evt.longitude, i, eventImage, evt.description];
 		eventIds.push(evt._id);
 		i++;
 	});
@@ -104,18 +104,20 @@ function loadMap(){
 
 	for (var i = 0; i < eventsAndChallenges.length; i++) {
 		var eAndC = eventsAndChallenges[i];
-			add_marker(eAndC[1], eAndC[2], eAndC[0], eAndC[4], i);
+			add_marker(eAndC[1], eAndC[2], eAndC[0], eAndC[4], i, eAndC[5]);
 	
 			$('#map-canvas').addClass('animated slideInRight');
 	}
 
 	//Check for Challenge Update
 	Deps.autorun(function(){
+		console.log('detected');
 		var i = 1;
 		var reactiveChall = Challenges.find();
 		reactiveChall.forEach(function (chal) {
 			if(!($.inArray(chal._id, challengeIds) > -1)){
-				add_marker(chal.lat, chal.lon, chal.name, challengeImage, i);
+				console.log("add marker");
+				add_marker(chal.latitude, chal.longitude, chal.name, challengeImage, i, chal.description);
 			
 					challengeIds.push(chal._id);
 				}
@@ -130,8 +132,8 @@ function loadMap(){
 		var reactiveEvt = Events.find();
 		reactiveEvt.forEach(function (evt) {
 			if(!($.inArray(evt._id, eventIds) > -1)){
-					add_marker(evt.lat, evt.lon, evt.name, eventImage, i);
-					eventIds.push(chal._id);
+					add_marker(evt.latitude, evt.longitude, evt.name, eventImage, i, evt.description);
+					eventIds.push(evt._id);
 				}
 				i++;
 			});
@@ -141,7 +143,7 @@ function loadMap(){
 	}
 
 
-	function add_marker(lat, lon, name, image, zindex){
+	function add_marker(lat, lon, name, image, zindex, desc){
 		// Shapes define the clickable region of the icon.
 	// The type defines an HTML &lt;area&gt; element 'poly' which
 	// traces out a polygon as a series of X,Y points. The final
@@ -151,6 +153,7 @@ function loadMap(){
 		coords: [1, 1, 1, 20, 18, 20, 18 , 1],
 		type: 'poly'
 	};
+	console.log('drawing');
 		var myLatLng = new google.maps.LatLng(lat, lon);
 				var marker = new google.maps.Marker({
 					position: myLatLng,
@@ -162,7 +165,14 @@ function loadMap(){
 					zIndex: zindex
 				});
 		marker.info = new google.maps.InfoWindow({
-			content : UI.toHTML(Template['map-popover'])
+			content : toHTMLWithData(Template['map-popover'], {
+				lat:lat,
+				lon:lon,
+				name:name,
+				image: image,
+				zindex: zindex,
+				desc: desc
+			})
 		});
 		google.maps.event.addListener(marker, 'click', function() {
 			marker.info.open(map,marker);
@@ -171,6 +181,10 @@ function loadMap(){
 
 
 }
+
+var toHTMLWithData = function (kind, data) {
+    return UI.toHTML(kind.extend({data: function () { return data; }}));
+};
 
 	Template.map.events({
 

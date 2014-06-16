@@ -46,7 +46,8 @@ Template.createOverlay.events({
 		e.preventDefault();
 
 		var name = $('#create-name').val();
-		var desc = $('creationDescription').html();
+		var desc = $('#creationDescription').val();
+		console.log(desc);
 		var type = $('#creation-type').find(':selected').text();
 		var lat = $('#latitude').val();
 		var lon = $('#longitude').val();
