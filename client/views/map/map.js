@@ -2,7 +2,7 @@ var infoOpen = false;
 
 Template.map.rendered = function() {
 
-	$('.overlay').height($(window).height()/1.35);
+	$('#map-canvas').height($(window).height()/1.35);
 	GoogleMaps.init(
 		{
 		'sensor': true, //optional
