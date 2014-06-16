@@ -42,9 +42,9 @@ function loadMap(){
 
 	var challenges = Challenges.find();
 	var i = 1;
-	var eventsAndChalleneges = [];
+	var eventsAndChallenges = [];
 	challenges.forEach(function (chal) {
-		eventsAndChalleneges[eventsAndChalleneges.length] = [chal.name, chal.longditude, chal.latitude, i];
+		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.longditude, chal.latitude, i];
 		i++;
 	});
 	
