@@ -7,6 +7,8 @@
     "googlemaps": {},
     "semantic-ui": {},
     "font-awesome": {},
-    "animate-css": {}
+    "animate-css": {},
+    "moment": {},
+    "bootstrap3-datetimepicker": {}
   }
 }
