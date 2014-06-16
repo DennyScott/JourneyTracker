@@ -3,6 +3,10 @@ Template.myEvents.helpers({
 		if(this.enrolledEventsIDs){
 			return Events.find( { '_id' : { $in : this.enrolledEventsIDs } } );
 		}
+	},
+
+	convertEventDate: function () {
+		return "In " + moment(this.eventDate).fromNow(true);
 	}
 });
 

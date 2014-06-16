@@ -14,6 +14,10 @@ Template.eventOverlay.helpers({
 				}
 			}
 		}
+	},
+
+	convertEventDate: function () {
+		return "In " + moment(this.eventDate).fromNow(true);
 	}
 });
 
