@@ -1,5 +1,6 @@
 var infoOpen = false;
 var challengeIds = [];
+var eventIds = [];
 
 Template.map.rendered = function() {
 
@@ -42,14 +43,6 @@ function loadMap(){
 	map.setCenter(myLat);
 
 
-	var challenges = Challenges.find();
-	var i = 1;
-	var eventsAndChallenges = [];
-	challenges.forEach(function (chal) {
-		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.latitude, chal.longitude, i];
-		challengeIds.push(chal._id);
-		i++;
-	});
 
 	// Add markers to the map
 
@@ -60,16 +53,96 @@ function loadMap(){
 	// Origins, anchor positions and coordinates of the marker
 	// increase in the X direction to the right and in
 	// the Y direction down.
-	var image = {
-		url: 'img/challenge.png',
+	var challengeImage = {
+		url: 'img/walkingtour.png',
 		// This marker is 20 pixels wide by 32 pixels tall.
-		size: new google.maps.Size(20, 32),
+		size: new google.maps.Size(30, 34),
 		// The origin for this image is 0,0.
 		origin: new google.maps.Point(0,0),
 		// The anchor for this image is the base of the flagpole at 0,32.
 		anchor: new google.maps.Point(0, 32)
 	};
-	// Shapes define the clickable region of the icon.
+
+	// Add markers to the map
+
+	// Marker sizes are expressed as a Size of X,Y
+	// where the origin of the image (0,0) is located
+	// in the top left of the image.
+
+	// Origins, anchor positions and coordinates of the marker
+	// increase in the X direction to the right and in
+	// the Y direction down.
+	var eventImage = {
+		url: 'img/festival.png',
+		// This marker is 20 pixels wide by 32 pixels tall.
+		size: new google.maps.Size(30, 34),
+		// The origin for this image is 0,0.
+		origin: new google.maps.Point(0,0),
+		// The anchor for this image is the base of the flagpole at 0,32.
+		anchor: new google.maps.Point(0, 32)
+	};
+
+	var challenges = Challenges.find();
+	var events = Events.find();
+	var i = 1;
+	var eventsAndChallenges = [];
+
+	challenges.forEach(function (chal) {
+		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.latitude, chal.longitude, i, challengeImage];
+		challengeIds.push(chal._id);
+		i++;
+	});
+
+		events.forEach(function (evt) {
+		eventsAndChallenges[eventsAndChallenges.length] = [evt.name, evt.latitude, evt.longitude, i, eventImage];
+		eventIds.push(evt._id);
+		i++;
+	});
+
+
+
+
+	for (var i = 0; i < eventsAndChallenges.length; i++) {
+		var eAndC = eventsAndChallenges[i];
+			add_marker(eAndC[1], eAndC[2], eAndC[0], eAndC[4], i);
+	
+			$('#map-canvas').addClass('animated slideInRight');
+	}
+
+	//Check for Challenge Update
+	Deps.autorun(function(){
+		var i = 1;
+		var reactiveChall = Challenges.find();
+		reactiveChall.forEach(function (chal) {
+			if(!($.inArray(chal._id, challengeIds) > -1)){
+				add_marker(chal.lat, chal.lon, chal.name, challengeImage, i);
+			
+					challengeIds.push(chal._id);
+				}
+				i++;
+			});
+
+		});
+		
+		//Check for Event Update
+		Deps.autorun(function(){
+		var i = 1;
+		var reactiveEvt = Events.find();
+		reactiveEvt.forEach(function (evt) {
+			if(!($.inArray(evt._id, eventIds) > -1)){
+					add_marker(evt.lat, evt.lon, evt.name, eventImage, i);
+					eventIds.push(chal._id);
+				}
+				i++;
+			});
+
+		});
+
+	}
+
+
+	function add_marker(lat, lon, name, image, zindex){
+		// Shapes define the clickable region of the icon.
 	// The type defines an HTML &lt;area&gt; element 'poly' which
 	// traces out a polygon as a series of X,Y points. The final
 	// coordinate closes the poly by connecting to the first
@@ -78,58 +151,26 @@ function loadMap(){
 		coords: [1, 1, 1, 20, 18, 20, 18 , 1],
 		type: 'poly'
 	};
-	for (var i = 0; i < eventsAndChallenges.length; i++) {
-		var eAndC = eventsAndChallenges[i];
-		var myLatLng = new google.maps.LatLng(eAndC[1], eAndC[2]);
-		var marker = new google.maps.Marker({
-			position: myLatLng,
-			map: map,
-			shape: shape,
-			animation: google.maps.Animation.DROP,
-			title: eAndC[0],
-			zIndex: eAndC[3]
-		});
-
-		var infowindow = new google.maps.InfoWindow({
-			content : UI.toHTML(Template['map-popover'])
-		});
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
-			$('#openModal').click(function(){
-				$('.ui.modal').modal('show');
-			});
-		});
-		$('#map-canvas').addClass('animated slideInRight');
-	}
-
-	Deps.autorun(function(){
-		console.log("autorun");
-		var i = 1;
-		var reactiveChall = Challenges.find();
-		console.log(reactiveChall);
-		reactiveChall.forEach(function (chal) {
-			console.log('in each');
-			if(!($.inArray(chal._id, challengeIds) > -1)){
-				console.log('Not in array');
-				console.log(chal);
-				var myLatLng = new google.maps.LatLng(chal.latitude, chal.longitude);
+		var myLatLng = new google.maps.LatLng(lat, lon);
 				var marker = new google.maps.Marker({
 					position: myLatLng,
 					map: map,
 					shape: shape,
+					icon: image,
 					animation: google.maps.Animation.DROP,
-					title: chal.name,
-					zIndex: i
+					title: name,
+					zIndex: zindex
 				});
-
-					challengeIds.push(chal._id);
-				}
-				i++;
-			});
+		marker.info = new google.maps.InfoWindow({
+			content : UI.toHTML(Template['map-popover'])
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+			marker.info.open(map,marker);
 
 		});
 
-	}
+
+}
 
 	Template.map.events({
 
