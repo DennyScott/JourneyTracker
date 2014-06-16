@@ -51,7 +51,7 @@ Meteor.methods({
 	//-----------------------------------END OF PROFILE ADDTION METHODS--------------------------------------//
 
 	//-----------------------------------PROFILE UPDATE METHODS----------------------------------------------//
-	
+
 	updateLastLoggedIn: function() {
 		var userid = Meteor.user()._id;
 		var found = Profiles.findOne( { 'userID': userid } );
