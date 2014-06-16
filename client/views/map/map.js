@@ -1,4 +1,5 @@
 var infoOpen = false;
+var challengeIds = [];
 
 Template.map.rendered = function() {
 
@@ -29,6 +30,7 @@ Template.map.rendered = function() {
 	}(document, "script", "twitter-wjs");
 
 	$('a[title]').tooltip();
+
 };
 
 function loadMap(){
@@ -44,10 +46,11 @@ function loadMap(){
 	var i = 1;
 	var eventsAndChallenges = [];
 	challenges.forEach(function (chal) {
-		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.longitude, chal.latitude, i];
+		eventsAndChallenges[eventsAndChallenges.length] = [chal.name, chal.latitude, chal.longitude, i];
+		challengeIds.push(chal._id);
 		i++;
 	});
-	
+
 	// Add markers to the map
 
 	// Marker sizes are expressed as a Size of X,Y
@@ -98,52 +101,80 @@ function loadMap(){
 		});
 		$('#map-canvas').addClass('animated slideInRight');
 	}
-}
 
-Template.map.events({
+	Deps.autorun(function(){
+		console.log("autorun");
+		var i = 1;
+		var reactiveChall = Challenges.find();
+		console.log(reactiveChall);
+		reactiveChall.forEach(function (chal) {
+			console.log('in each');
+			if(!($.inArray(chal._id, challengeIds) > -1)){
+				console.log('Not in array');
+				console.log(chal);
+				var myLatLng = new google.maps.LatLng(chal.latitude, chal.longitude);
+				var marker = new google.maps.Marker({
+					position: myLatLng,
+					map: map,
+					shape: shape,
+					animation: google.maps.Animation.DROP,
+					title: chal.name,
+					zIndex: i
+				});
 
-	'click #toggleStats' : function(e){
-		e.preventDefault();
-		var button = $('#toggleStats');
-		var map = $('#map-canvas');
+					challengeIds.push(chal._id);
+				}
+				i++;
+			});
 
-		if(!infoOpen){
-			map.removeClass('col-md-12');
-			map.addClass('col-md-8');
-			setTimeout(function(){
-				$('#stats').addClass('animated fadeIn show');
-			},400);
-			google.maps.event.trigger(map, 'resize');
-			infoOpen = true;
-		}else{
-			map.removeClass('col-md-8');
-			map.addClass('col-md-12');
-			$('#stats').removeClass('animated fadeIn show');
-			google.maps.event.trigger(map, 'resize');
-			infoOpen = false;
-		}
-	},
+		});
 
-	'click .tab-toggle' : function(e) {
-		var priorDisplay =	$('#home-display').find(".activeOverlay");
-		priorDisplay.addClass('animated slideOutLeft');
-
-		setTimeout(function() {
-			priorDisplay.removeClass('activeOverlay animated slideOutLeft');
-			var currentTarget =  $('#' + $(e.currentTarget).attr('data-home'));
-			currentTarget.addClass('animated slideInRight activeOverlay');
-			if($(e.currentTarget).attr('data-home') === 'map-overlay'){
-				$('#toggleStats').fadeIn();
-			}else{
-				$('#toggleStats').fadeOut();
-			}
-
-			if($(e.currentTarget).attr('data-home') === 'create-overlay'){
-				console.log('here');
-				google.maps.event.trigger(selectionMap, 'resize');
-			}
-
-		},500);				
 	}
 
-});
+	Template.map.events({
+
+		'click #toggleStats' : function(e){
+			e.preventDefault();
+			var button = $('#toggleStats');
+			var map = $('#map-canvas');
+
+			if(!infoOpen){
+				map.removeClass('col-md-12');
+				map.addClass('col-md-8');
+				setTimeout(function(){
+					$('#stats').addClass('animated fadeIn show');
+				},400);
+				google.maps.event.trigger(map, 'resize');
+				infoOpen = true;
+			}else{
+				map.removeClass('col-md-8');
+				map.addClass('col-md-12');
+				$('#stats').removeClass('animated fadeIn show');
+				google.maps.event.trigger(map, 'resize');
+				infoOpen = false;
+			}
+		},
+
+		'click .tab-toggle' : function(e) {
+			var priorDisplay =	$('#home-display').find(".activeOverlay");
+			priorDisplay.addClass('animated slideOutLeft');
+
+			setTimeout(function() {
+				priorDisplay.removeClass('activeOverlay animated slideOutLeft');
+				var currentTarget =  $('#' + $(e.currentTarget).attr('data-home'));
+				currentTarget.addClass('animated slideInRight activeOverlay');
+				if($(e.currentTarget).attr('data-home') === 'map-overlay'){
+					$('#toggleStats').fadeIn();
+				}else{
+					$('#toggleStats').fadeOut();
+				}
+
+				if($(e.currentTarget).attr('data-home') === 'create-overlay'){
+					console.log('here');
+					google.maps.event.trigger(selectionMap, 'resize');
+				}
+
+			},500);				
+		}
+
+	});

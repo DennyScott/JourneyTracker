@@ -40,6 +40,23 @@ Template.createOverlay.events({
 			}else{
 				$('.event-article').prop('disabled', true);	
 			}
+	},
+
+	'click #submit' : function(e){
+		e.preventDefault();
+
+		var name = $('#create-name').val();
+		var desc = $('creationDescription').html();
+		var type = $('#creation-type').find(':selected').text();
+		var lat = $('#latitude').val();
+		var lon = $('#longitude').val();
+
+		if(type === 'Event'){
+			var time = $('#datetime').val();
+			Meteor.call('addEvent', {name: name, description: desc, eventDate: new Date(time), longitude: lon, latitude: lat});
+		}else{
+			Meteor.call('addChallenge', {name: name, description: desc, longitude: lon, latitude: lat});
+		}
 	}
 });
 
