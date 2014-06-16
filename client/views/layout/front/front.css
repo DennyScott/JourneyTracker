@@ -2,3 +2,7 @@ html, body, .box-lid-content, .box-lid {
 	height:100%;
 }
 
+body {
+	overflow-x:hidden;
+}
+
