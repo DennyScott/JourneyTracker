@@ -14,7 +14,7 @@ Meteor.methods({
 		}
 
 		//filling in other keys
-		var newChallenge = _.extend(_.pick(challengeAttributes, 'name', 'description', 'isTimed', 'time', 'longitude', 'latitude'), {
+		var newChallenge = _.extend(_.pick(challengeAttributes, 'name', 'description', 'longitude', 'latitude'), {
 			createdTime: new Date().getTime(),
 			upVotes: 0,
 			downVotes: 0,
